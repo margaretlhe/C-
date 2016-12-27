@@ -1,0 +1,85 @@
+EVAC.CPP
+Evac::Evac(City *citie, int numCitie, int numRoad): numCities(numCitie)
+	//CHANGE sortCities call to: sortCities(0, numCitie-1);
+
+MAXFLOW.CPP
+//delete RecursionBFS()
+//delete findCities()
+//delete evacueesInCities()
+//change Makefile (add maxflow.o)
+int min(int road, int source, int dest)
+	//ADD AFTER (min > dest ...) //min = (0 > min ? 0:min); 
+
+void MaxFlow::createBFS()
+	//DELETE: temp->population = 0;
+
+void MaxFlow::sortRoads(Road **roads, int left, int right){
+	int i = left, j = right;
+      Road tmp;
+      Road pivot = (*roads)[(left + right) / 2];
+
+      /* partition */
+      while (i <= j) {
+            while (-orig[(*roads)[i].destinationCityID].x < -orig[pivot.destinationCityID].x)
+                  i++;
+            while (-orig[(*roads)[j].destinationCityID].x > -orig[pivot.destinationCityID].x)
+                  j--;
+            if (i <= j) {
+                  tmp = (*roads)[i];
+                  (*roads)[i] = (*roads)[j];
+                  (*roads)[j] = tmp;
+                  i++;
+                  j--;
+            }
+      }
+
+      /* recursion */
+      if (left < j)
+            sortRoads(roads, left, j);
+      if (i < right)
+            sortRoads(roads, i, right);
+}
+
+void MaxFlow::evacuate(){
+	int hour = 1;
+
+	vector<City*> first = getDepthCities(1);
+	vector<City*> second = getDepthCities(2);
+
+	int moved = 0;
+	int left = 0;
+	for(int k = 0; k < esize; k++){
+		left += first[k]->population;
+		sortRoads(&(first[k]->roads), 0, first[k]->roadCount-1);
+	}
+
+	for(int k = 0; k < (signed)second.size(); k++){
+		sortRoads(&(second[k]->roads), 0, second[k]->roadCount-1);
+	}
+
+	while(left > 0){
+		takePeople(second, hour);
+		moved = takePeople(first, hour);
+		left -= moved;
+		hour++;
+	}
+}
+
+vector<City*> MaxFlow::getDepthCities(int depth){
+	//DELETE both depthSize calls
+
+int MaxFlow::takePeople(vector<City*> sources, int hour){
+	//ADD AFTER EVACROUTE ER: int total = 0;
+	//CHANGE: for(int i = 0; i < (signed)sources.size(); i++){
+	//CHANGE: for(int j = source->roadCount-1; j >= 0 ; j--){
+	//CHANGE: if(-source->x <= -dest->x && dest->population >= dest->evacuees){
+	//ADD THIS STUFF AFTER ER.NUMPEOPLE = NUMTOSEND
+		if(dest->x != -1)
+			total += numToSend;
+
+		er.roadID = source->roads[j].ID;
+		er.time = hour;
+		if(numToSend > 0)
+			evacRoutes.push_back(er);
+
+	//ADD AFTER EVERYTHING: return total;
